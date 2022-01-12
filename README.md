@@ -7,9 +7,9 @@ This project contains the source code of the first version of the DoME algorithm
 The easiest way to wun DoME is by calling the function dome. Here is an example of use, in which only the main hyperparameters are set:
 
 	(trainingMSE, validationMSE, testMSE, bestTree) = dome(inputs, targets;
-		minimumReductionMSE = 1e-6,
-		maximumNodes = 50 ,
-		strategy = StrategyExhaustive
+	   minimumReductionMSE = 1e-6,
+	   maximumNodes = 50 ,
+	   strategy = StrategyExhaustive
 	);
 	println(string(bestTree));
 
