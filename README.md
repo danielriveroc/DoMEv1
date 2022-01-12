@@ -33,6 +33,8 @@ The declaration of this function is the following, with the whole set of paramet
 	    checkForErrors = false
 	    )
 
+The parameter dataInRows allows the input matrix to have dimensions NxP when it is set to true (by default) or PxN when it is false (N: number of instances).
+
 Regarding strategies, the 4 strategies described in the paper are available, with names StrategyExhaustive (by default), StrategyExhaustiveWithConstantOptimization, StrategySelectiveWithConstantOptimization and StrategySelective. They are also called Strategy1, Strategy2, Strategy3, Strategy4 respectively as used in the paper.
 
 You may see that the source code allows the definition of a validation set. However, it was not used in the experiments of the paper and thus this part of the code may have errors.
