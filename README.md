@@ -9,7 +9,7 @@ The easiest way to wun DoME is by calling the function dome. Here is an example 
 dome(inputs, targets;
 );
 
-where inputs is a NxP matrix of real numbers, and targets is a N-length vector or real numbers. Inputs and targets can have Float32 or Float64 values; however, since many constants are generated during the run of the algorithm, it is recommended to use Float64 to have the highest precision. Also, both inputs and targets must have the same type (Float32 or Float64)
+where inputs is a NxP matrix of real numbers, and targets is a N-length vector or real numbers. Inputs and targets can have Float32 or Float64 values; however, since many constants are generated during the run of the algorithm, it is recommended to use Float64 to have the highest precision. Also, the elements of both inputs and targets must have the same type (Float32 or Float64)
 
 The rest of the parameters are optional. You may see that the source code allows the definition of a validation set. However, it was not used in the experiments of the paper and thus this part of the code may have errors.
 
@@ -22,11 +22,17 @@ To run this, you need to have the following files in the same folder:
 
 An alternative way to run DoME is by creating a DoME struct and calling the function Step for each iteration. This is automatically done by the previous way to run DoME.
 
+# How to obtain the values of tables 1,3 and 4 in the paper
+
+Run the file examplePaper.jl
+Run the file experimentNewton.jl
+
 # How to repeat the experiments described in the paper
 
 To repeat the experiments of the paper, create a folder named "datasets" and store the corresponding datasets from PMLB. When running the experiments, a folder named "results" will be created. The following files were used to perform the experiments:
 
 	- usefulFunctions.jl
+	- createScripts.jl
 	- experimentsDoME.jl
 	- readResults.jl
 
