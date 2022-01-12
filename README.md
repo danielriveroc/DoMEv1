@@ -6,8 +6,8 @@ This project contains the source code of the first version of the DoME algorithm
 
 The easiest way to wun DoME is by calling the function dome. Here is an example of use, I guess it is easy to understand:
 
-dome(inputs, targets;
-);
+	dome(inputs, targets;
+	);
 
 where inputs is a NxP matrix of real numbers, and targets is a N-length vector or real numbers. Inputs and targets can have Float32 or Float64 values; however, since many constants are generated during the run of the algorithm, it is recommended to use Float64 to have the highest precision. Also, the elements of both inputs and targets must have the same type (Float32 or Float64)
 
