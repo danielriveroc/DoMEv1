@@ -22,12 +22,12 @@ To run this, you need to have the following files in the same folder:
 
 An alternative way to run DoME is by creating a DoME struct and calling the function Step for each iteration. This is automatically done by the previous way to run DoME.
 
-# How to obtain the values of tables 1,3 and 4 in the paper
+# How to obtain the values of tables 1, 3 and 4 in the paper
 
 Run the file examplePaper.jl
 Run the file experimentNewton.jl
 
-# How to repeat the experiments described in the paper
+# How to repeat the experiments described in the paper (section 4)
 
 To repeat the experiments of the paper, create a folder named "datasets" and store the corresponding datasets from PMLB. When running the experiments, a folder named "results" will be created. The following files were used to perform the experiments:
 
