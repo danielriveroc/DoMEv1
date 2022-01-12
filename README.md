@@ -43,6 +43,7 @@ An alternative way to run DoME is by creating a DoME struct and calling the func
 # How to repeat the experiments described in the paper
 
 To obtain the values of tables 1 and 3 and 4 in the paper, run the file examplePaper.jl
+
 To obtain the values of tables 4 in the paper (Newton's law of universal gravitation), run the file experimentNewton.jl
 
 To repeat the experiments describen in section 4, create a folder named "datasets" and store the corresponding datasets from PMLB. When running the experiments, a folder named "results" will be created. The following files were used to perform the experiments:
