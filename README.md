@@ -13,21 +13,21 @@ where inputs is a NxP matrix of real numbers, and targets is a N-length vector o
 
 The declaration of this function is the following:
 
-function dome(inputs::Array{<:Real,2}, targets::Array{<:Real,1};
-    dataInRows = true,
-    validationIndices::Array{Int64,1} = Array{Int64,1}([]),
-    testIndices::Array{Int64,1} = Array{Int64,1}([]),
-    validationRatio = 0. ,
-    testRatio = 0. ,
-    minimumReductionMSE = 1e-6,
-    maximumHeight = Inf ,
-    maximumNodes = Inf ,
-    strategy = Strategy1 ,
-    goalMSE = 0 ,
-    maxIterations = Inf ,
-    showText = false ,
-    checkForErrors = false
-    )
+	function dome(inputs::Array{<:Real,2}, targets::Array{<:Real,1};
+	    dataInRows = true,
+	    validationIndices::Array{Int64,1} = Array{Int64,1}([]),
+	    testIndices::Array{Int64,1} = Array{Int64,1}([]),
+	    validationRatio = 0. ,
+	    testRatio = 0. ,
+	    minimumReductionMSE = 1e-6,
+	    maximumHeight = Inf ,
+	    maximumNodes = Inf ,
+	    strategy = Strategy1 ,
+	    goalMSE = 0 ,
+	    maxIterations = Inf ,
+	    showText = false ,
+	    checkForErrors = false
+	    )
 
 The rest of the parameters are optional. You may see that the source code allows the definition of a validation set. However, it was not used in the experiments of the paper and thus this part of the code may have errors.
 
