@@ -4,14 +4,18 @@ This project contains the source code of the first version of the DoME algorithm
 
 # How to use DoME
 
-The easiest way to wun DoME is by calling the function dome. Here is an example of use, I guess it is easy to understand:
+The easiest way to wun DoME is by calling the function dome. Here is an example of use, in which only the main hyperparameters are set:
 
-	dome(inputs, targets;
+	(trainingMSE, validationMSE, testMSE, bestTree) = dome(inputs, targets;
+		minimumReductionMSE = 1e-6,
+		maximumNodes = 50 ,
+		strategy = StrategyExhaustive
 	);
+	println(string(bestTree));
 
-where inputs is a NxP matrix of real numbers, and targets is a N-length vector or real numbers. Inputs and targets can have Float32 or Float64 values; however, since many constants are generated during the run of the algorithm, it is recommended to use Float64 to have the highest precision. Also, the elements of both inputs and targets must have the same type (Float32 or Float64)
+where inputs is a NxP matrix of real numbers, and targets is a N-length vector or real numbers. Inputs and targets can have Float32 or Float64 values; however, since many constants are generated during the run of the algorithm, it is recommended to use Float64 to have the highest precision. Also, the elements of both inputs and targets must have the same type (Float32 or Float64). The parameters minimumReductionMSE, maximumNodes and strategy are the 3 hyperparameters described in the paper.
 
-The declaration of this function is the following:
+The declaration of this function is the following, with the whole set of parameters:
 
 	function dome(inputs::Array{<:Real,2}, targets::Array{<:Real,1};
 	    dataInRows = true,
@@ -21,15 +25,17 @@ The declaration of this function is the following:
 	    testRatio = 0. ,
 	    minimumReductionMSE = 1e-6,
 	    maximumHeight = Inf ,
-	    maximumNodes = Inf ,
-	    strategy = Strategy1 ,
+	    maximumNodes = 50 ,
+	    strategy = StrategyExhaustive ,
 	    goalMSE = 0 ,
 	    maxIterations = Inf ,
 	    showText = false ,
 	    checkForErrors = false
 	    )
 
-The rest of the parameters are optional. You may see that the source code allows the definition of a validation set. However, it was not used in the experiments of the paper and thus this part of the code may have errors.
+Regarding strategies, the 4 strategies described in the paper are available, with names StrategyExhaustive (by default), StrategyExhaustiveWithConstantOptimization, StrategySelectiveWithConstantOptimization and StrategySelective. They are also called Strategy1, Strategy2, Strategy3, Strategy4 respectively as used in the paper.
+
+You may see that the source code allows the definition of a validation set. However, it was not used in the experiments of the paper and thus this part of the code may have errors.
 
 To run this, you need to have the following files in the same folder:
 
