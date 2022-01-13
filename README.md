@@ -143,13 +143,15 @@ Another example is the Selective strategy, that performs the searches performs s
 	   return changeDone;
 	end;
 
+Also, inside the strategy the function OptimizeConstants! can be called. This function performs the constant optimization process as described in the paper, and returns a boolean value with the same interpretation. The strategies corresponding to Exhaustive and Selective but with constant optimisation are as follows:
+
 	function StrategyExhaustiveWithConstantOptimization(obj::DoME)
 	   changeDone = PerformSearches!(obj;
 	      whichNodesPerformConstantSearch=Union{Variable,NonTerminal} ,
 	      whichNodesPerformVariableSearch=Any ,
 	      whichNodesPerformConstantVariableSearch=Any ,
 	      performConstantExpressionSearch=true);
-	      changeDone && OptimizeConstants(obj);
+	   changeDone && OptimizeConstants(obj);
 	   return changeDone;
 	end;
 
