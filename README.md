@@ -61,3 +61,59 @@ To repeat the experiments describen in section 4, create a folder named "dataset
 	- experimentsDoME.jl
 	- readResults.jl
 
+# How to repeat the experiments described in the paper
+
+	function StrategyExhaustive(obj::DoME)
+	   changeDone = PerformSearches!(obj;
+	      whichNodesPerformConstantSearch=Any ,
+	      whichNodesPerformVariableSearch=Any ,
+	      whichNodesPerformConstantVariableSearch=Any ,
+	      performConstantExpressionSearch=true);
+	      return changeDone;
+	   end;
+
+function StrategyExhaustiveWithConstantOptimization(obj::DoME)
+    changeDone = PerformSearches!(obj;
+        whichNodesPerformConstantSearch=Union{Variable,NonTerminal} ,
+        whichNodesPerformVariableSearch=Any ,
+        whichNodesPerformConstantVariableSearch=Any ,
+        performConstantExpressionSearch=true);
+    changeDone && OptimizeConstants(obj);
+    return changeDone;
+end;
+
+function StrategySelectiveWithConstantOptimization(obj::DoME)
+    # Variable search only on constants
+    changeDone =               PerformSearches!(obj; whichNodesPerformVariableSearch=Constant);
+    changeDone = changeDone || PerformSearches!(obj; performConstantExpressionSearch=true);
+    # Constant-variable search only on terminals
+    changeDone = changeDone || PerformSearches!(obj; whichNodesPerformConstantVariableSearch=Union{Constant,Variable});
+    if (!changeDone)
+        # Constant search on variables and non-terminals, variable seach on variables and non-terminals, and constant-variable search on non-terminals
+        changeDone = PerformSearches!(obj;
+            whichNodesPerformConstantSearch=Union{Variable,NonTerminal} ,
+            whichNodesPerformVariableSearch=Union{Variable,NonTerminal} ,
+            whichNodesPerformConstantVariableSearch=NonTerminal );
+    end;
+    changeDone && OptimizeConstants(obj);
+    return changeDone;
+end;
+
+function StrategySelective(obj::DoME)
+    changeDone =               PerformSearches!(obj; whichNodesPerformConstantSearch=Constant);
+    # Variable search only on constants
+    changeDone = changeDone || PerformSearches!(obj; whichNodesPerformVariableSearch=Constant);
+    changeDone = changeDone || PerformSearches!(obj; performConstantExpressionSearch=true);
+    # Constant-variable search only on terminals
+    changeDone = changeDone || PerformSearches!(obj; whichNodesPerformConstantVariableSearch=Union{Constant,Variable});
+    if (!changeDone)
+        # Constant search on variables and non-terminals, variable seach on variables and non-terminals, and constant-variable search on non-terminals
+        changeDone = PerformSearches!(obj;
+            whichNodesPerformConstantSearch=Union{Variable,NonTerminal} ,
+            whichNodesPerformVariableSearch=Union{Variable,NonTerminal} ,
+            whichNodesPerformConstantVariableSearch=NonTerminal );
+    end;
+    return changeDone;
+end;
+
+
