@@ -6,14 +6,38 @@ This project contains the source code of the first version of the DoME algorithm
 
 The easiest way to wun DoME is by calling the function dome. Here is an example of use, in which only the main hyperparameters are set:
 
+	using FileIO
+	using DelimitedFiles
+	
+	# Load the dataset and create a matrix with the inputs and a vector for the targets
+	dataset = DelimitedFiles.readdlm("datasets/561_cpu.tsv");
+	inputs  = Float64.(dataset[2:end, 1:end-1]);
+	targets = Float64.(dataset[2:end, end]);
+
+	# Load the DoME system
+	include("DoME.jl");
+	# Run DoME with this parameters
 	(trainingMSE, validationMSE, testMSE, bestTree) = dome(inputs, targets;
 	   minimumReductionMSE = 1e-6,
-	   maximumNodes = 50 ,
-	   strategy = StrategyExhaustive
+	   maximumNodes = 30,
+	   strategy = StrategyExhaustive,
+	   showText = true
 	);
-	println(string(bestTree));
+	# Write the expression on screen
+	println("Best expression found: ", string(bestTree));
+	println("Best expression found (written in Latex): ", latexString(bestTree));
+	# If you want to rename the variable names, one of the easiest way is to do something like:
+	expression = string(bestTree);
+	expression = replace(expression, "X1" => "vendor");
+	expression = replace(expression, "X2" => "MYCT");
+	expression = replace(expression, "X3" => "MMIN");
+	expression = replace(expression, "X4" => "MMAX");
+	expression = replace(expression, "X5" => "CACH");
+	expression = replace(expression, "X6" => "CHMIN");
+	expression = replace(expression, "X7" => "CHMAX");
+	println("Best expression found (with the real names of the variables): ", expression);
 
-where inputs is a NxP matrix of real numbers, and targets is a N-length vector or real numbers (N: number of instances, P: number of variables). Inputs and targets can have Float32 or Float64 values; however, since many constants are generated during the run of the algorithm, it is recommended to use Float64 to have the highest precision. Also, the elements of both inputs and targets must have the same type (Float32 or Float64). The parameters minimumReductionMSE, maximumNodes and strategy are the 3 hyperparameters described in the paper.
+When calling the function dome, inputs is a NxP matrix of real numbers, and targets is a N-length vector or real numbers (N: number of instances, P: number of variables). Inputs and targets can have Float32 or Float64 values; however, since many constants are generated during the run of the algorithm, it is recommended to use Float64 to have the highest precision. Also, the elements of both inputs and targets must have the same type (Float32 or Float64). The parameters minimumReductionMSE, maximumNodes and strategy are the 3 hyperparameters described in the paper.
 
 The declaration of this function is the following, with the whole set of parameters and their default values:
 
