@@ -13,7 +13,7 @@ The easiest way to wun DoME is by calling the function dome. Here is an example 
 	);
 	println(string(bestTree));
 
-where inputs is a NxP matrix of real numbers, and targets is a N-length vector or real numbers. Inputs and targets can have Float32 or Float64 values; however, since many constants are generated during the run of the algorithm, it is recommended to use Float64 to have the highest precision. Also, the elements of both inputs and targets must have the same type (Float32 or Float64). The parameters minimumReductionMSE, maximumNodes and strategy are the 3 hyperparameters described in the paper.
+where inputs is a NxP matrix of real numbers, and targets is a N-length vector or real numbers (N: number of instances, P: number of variables). Inputs and targets can have Float32 or Float64 values; however, since many constants are generated during the run of the algorithm, it is recommended to use Float64 to have the highest precision. Also, the elements of both inputs and targets must have the same type (Float32 or Float64). The parameters minimumReductionMSE, maximumNodes and strategy are the 3 hyperparameters described in the paper.
 
 The declaration of this function is the following, with the whole set of parameters:
 
@@ -32,6 +32,8 @@ The declaration of this function is the following, with the whole set of paramet
 	    showText = false ,
 	    checkForErrors = false
 	    )
+
+The description of these parameters is the following, grouped in
 
 The parameter dataInRows allows the input matrix to have dimensions NxP when it is set to true (by default) or PxN when it is false (N: number of instances).
 
@@ -61,7 +63,7 @@ To repeat the experiments describen in section 4, create a folder named "dataset
 	- experimentsDoME.jl
 	- readResults.jl
 
-# How to repeat the experiments described in the paper
+# How to define your own strategy
 
 	function StrategyExhaustive(obj::DoME)
 	   changeDone = PerformSearches!(obj;
