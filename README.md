@@ -99,12 +99,47 @@ To repeat the experiments describen in section 4, create a folder named "dataset
 
 # How to define your own strategy
 
+Strategies are based on calling the functions PerformSearches! and OptimizeConstants!
+
+The function PerformSearches! allows to specify in the call which nodes are going to be used on each search. To do this, this function has keyword parameters for each search, and in each one the user can specify type of the nodes in which this search will take place. These types are Terminal, Variable, Constant, and NonTerminal. Also, the types Any and Nothing can be used to specify that a search will be performed on all of the nodes, or in none of them respectively. The declaration of this function is the following:
+
+	function PerformSearches!(obj::DoME;
+	   whichNodesPerformConstantSearch        ::Union{DataType,Union} = Nothing ,
+	   whichNodesPerformVariableSearch        ::Union{DataType,Union} = Nothing ,
+	   whichNodesPerformConstantVariableSearch::Union{DataType,Union} = Nothing ,
+	   performConstantExpressionSearch        ::Bool = false)
+
+Note that constant-expression search receives a boolean value, because this search is only performed on non-terminal nodes.
+
+This function returns a Boolean value: if it is true, a search has been succesful, otherwise no search was succesful. The strategy function to be defined should also return a Boolean value, with the same interpretation.
+
+An example is the Exhaustive strategy, in which the searches are performed on all of the nodes of the tree:
+
 	function StrategyExhaustive(obj::DoME)
 	   changeDone = PerformSearches!(obj;
 	      whichNodesPerformConstantSearch=Any ,
 	      whichNodesPerformVariableSearch=Any ,
 	      whichNodesPerformConstantVariableSearch=Any ,
 	      performConstantExpressionSearch=true);
+	   return changeDone;
+	end;
+
+Another example is the Selective strategy, that performs the searches performs searches sequentially, moving on to the next one only if the previous one has been unsuccessful:
+
+	function StrategySelective(obj::DoME)
+	   changeDone =               PerformSearches!(obj; whichNodesPerformConstantSearch=Constant);
+	   # Variable search only on constants
+	   changeDone = changeDone || PerformSearches!(obj; whichNodesPerformVariableSearch=Constant);
+	   changeDone = changeDone || PerformSearches!(obj; performConstantExpressionSearch=true);
+	   # Constant-variable search only on terminals
+	   changeDone = changeDone || PerformSearches!(obj; whichNodesPerformConstantVariableSearch=Union{Constant,Variable});
+	   if (!changeDone)
+	      # Constant search on variables and non-terminals, variable seach on variables and non-terminals, and constant-variable search on non-terminals
+	      changeDone = PerformSearches!(obj;
+	         whichNodesPerformConstantSearch=Union{Variable,NonTerminal} ,
+	         whichNodesPerformVariableSearch=Union{Variable,NonTerminal} ,
+	         whichNodesPerformConstantVariableSearch=NonTerminal );
+	   end;
 	   return changeDone;
 	end;
 
@@ -135,21 +170,4 @@ To repeat the experiments describen in section 4, create a folder named "dataset
 	   return changeDone;
 	end;
 
-	function StrategySelective(obj::DoME)
-	   changeDone =               PerformSearches!(obj; whichNodesPerformConstantSearch=Constant);
-	   # Variable search only on constants
-	   changeDone = changeDone || PerformSearches!(obj; whichNodesPerformVariableSearch=Constant);
-	   changeDone = changeDone || PerformSearches!(obj; performConstantExpressionSearch=true);
-	   # Constant-variable search only on terminals
-	   changeDone = changeDone || PerformSearches!(obj; whichNodesPerformConstantVariableSearch=Union{Constant,Variable});
-	   if (!changeDone)
-	      # Constant search on variables and non-terminals, variable seach on variables and non-terminals, and constant-variable search on non-terminals
-	      changeDone = PerformSearches!(obj;
-	      whichNodesPerformConstantSearch=Union{Variable,NonTerminal} ,
-	      whichNodesPerformVariableSearch=Union{Variable,NonTerminal} ,
-	      whichNodesPerformConstantVariableSearch=NonTerminal );
-	   end;
-	   return changeDone;
-	end;
-
-
+These four strategies are provided in the file DoME.jl and are available for use.
