@@ -15,7 +15,7 @@ The easiest way to wun DoME is by calling the function dome. Here is an example 
 
 where inputs is a NxP matrix of real numbers, and targets is a N-length vector or real numbers (N: number of instances, P: number of variables). Inputs and targets can have Float32 or Float64 values; however, since many constants are generated during the run of the algorithm, it is recommended to use Float64 to have the highest precision. Also, the elements of both inputs and targets must have the same type (Float32 or Float64). The parameters minimumReductionMSE, maximumNodes and strategy are the 3 hyperparameters described in the paper.
 
-The declaration of this function is the following, with the whole set of parameters:
+The declaration of this function is the following, with the whole set of parameters and their default values:
 
 	function dome(inputs::Array{<:Real,2}, targets::Array{<:Real,1};
 	    dataInRows = true,
@@ -35,18 +35,21 @@ The declaration of this function is the following, with the whole set of paramet
 
 The description of these parameters is the following, grouped in
 
-	The parameter dataInRows allows the input matrix to have dimensions NxP when it is set to true (by default) or PxN when it is false (N: number of instances).
-
+	dataInRows -> allows the input matrix to have dimensions NxP when it is set to true (by default) or PxN when it is false (N: number of instances).
 	minimumReductionMSE -> A search is found to be successful if the reduction in MSE is positive and higher than the previous MSE value multiplied by this parameter.
 	maximumHeight -> maximum height of the tree. As explained in the paper, this parameter is not recommended to be used in the experiments.
 	maximumNodes -> maximum number of nodes in the tree.
-	strategy -> The strategy used to select which searches are going to be performed on which nodes. The 4 strategies described in the paper are available, with names StrategyExhaustive (by default), StrategyExhaustiveWithConstantOptimization, StrategySelectiveWithConstantOptimization and StrategySelective. They are also called Strategy1, Strategy2, Strategy3, Strategy4 respectively as used in the paper.
+	strategy -> the strategy used to select which searches are going to be performed on which nodes. The 4 strategies described in the paper are available, with names StrategyExhaustive (by default), StrategyExhaustiveWithConstantOptimization, StrategySelectiveWithConstantOptimization and StrategySelective. They are also called Strategy1, Strategy2, Strategy3, Strategy4 respectively as used in the paper.
+	goalMSE -> if the algorithm reaches this MSE value in training, the iterative process is stopped.
+	maxIterations -> maximum number of iterations to be performed.
 	testIndices -> allows to split the dataset by separating some instances to perform the test, specifying which ones will be used for test.
 	testRatio ->   allows to split the dataset by separating some random instances to perform the test, specifying the ratio used for test.
 	validationIndices -> allows to split the dataset by separating some instances to perform the validation, specifying which ones will be used for validation.
 	validationRatio ->   allows to split the dataset by separating some random instances to perform the validation, specifying the ratio used for validation.
+	showText -> if it is set to true, on each iteration some text (iteration number, best tree, MSE in training and test) is shown.
+	checkForErrors -> this parameter was used only for debugging, to easily find bugs in the source code. Therefore, it is best to leave it as false.
 
-You may see that the source code allows the definition of a validation set. However, it was not used in the experiments of the paper and thus this part of the code may have errors.
+As it can be sen, this function allows the definition of a validation set. However, it was not used in the experiments of the paper and thus this part of the code may have errors.
 
 To run this, you need to have the following files in the same folder:
 
