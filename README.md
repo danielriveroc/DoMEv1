@@ -35,9 +35,16 @@ The declaration of this function is the following, with the whole set of paramet
 
 The description of these parameters is the following, grouped in
 
-The parameter dataInRows allows the input matrix to have dimensions NxP when it is set to true (by default) or PxN when it is false (N: number of instances).
+	The parameter dataInRows allows the input matrix to have dimensions NxP when it is set to true (by default) or PxN when it is false (N: number of instances).
 
-Regarding strategies, the 4 strategies described in the paper are available, with names StrategyExhaustive (by default), StrategyExhaustiveWithConstantOptimization, StrategySelectiveWithConstantOptimization and StrategySelective. They are also called Strategy1, Strategy2, Strategy3, Strategy4 respectively as used in the paper.
+	minimumReductionMSE -> A search is found to be successful if the reduction in MSE is positive and higher than the previous MSE value multiplied by this parameter.
+	maximumHeight -> maximum height of the tree. As explained in the paper, this parameter is not recommended to be used in the experiments.
+	maximumNodes -> maximum number of nodes in the tree.
+	strategy -> The strategy used to select which searches are going to be performed on which nodes. The 4 strategies described in the paper are available, with names StrategyExhaustive (by default), StrategyExhaustiveWithConstantOptimization, StrategySelectiveWithConstantOptimization and StrategySelective. They are also called Strategy1, Strategy2, Strategy3, Strategy4 respectively as used in the paper.
+	testIndices -> allows to split the dataset by separating some instances to perform the test, specifying which ones will be used for test.
+	testRatio ->   allows to split the dataset by separating some random instances to perform the test, specifying the ratio used for test.
+	validationIndices -> allows to split the dataset by separating some instances to perform the validation, specifying which ones will be used for validation.
+	validationRatio ->   allows to split the dataset by separating some random instances to perform the validation, specifying the ratio used for validation.
 
 You may see that the source code allows the definition of a validation set. However, it was not used in the experiments of the paper and thus this part of the code may have errors.
 
