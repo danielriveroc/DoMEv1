@@ -77,12 +77,12 @@ As it can be sen, this function allows the definition of a validation set. Howev
 
 To run this, you need to have the following files in the same folder:
 
-	- DoME.jl -> Main algorithm
-	- Equation.jl
-	- NodePool.jl
-	- Tree.jl -> Tree structure creation and some useful functions to operate
+	- Tree.jl -> Tree structure creation and some useful functions to operate.
+	- DoME.jl -> Main algorithm, with the searches and the 4 strategies.
+	- Equation.jl -> Management of the equations of each node, and calculation of the best constant for each node.
+	- NodePool.jl -> Struct for storing nodes to be used in the tree. This struct is filled with variables; however, in the future other nodes (and subtrees) could be stored on it.
 
-An alternative way to run DoME is by creating a DoME struct and calling the function Step! for each iteration. This is automatically done by the previous way to run DoME.
+An alternative way to run DoME is by creating a DoME struct and calling the function Step! for each iteration. This is automatically done by the previous way to run DoME. To eun DoME, only the packages Statistics and Random are needed.
 
 # How to repeat the experiments described in the paper
 
@@ -90,17 +90,14 @@ To obtain the values of tables 1 and 3 and 4 in the paper, run the file exampleP
 
 To obtain the values of tables 4 in the paper (Newton's law of universal gravitation), run the file experimentNewton.jl
 
-To repeat the experiments describen in section 4, create a folder named "datasets" and store the datasets from PMLB used in the paper. These experiments were performed with a Slurm job scheduling system. The following files were used to perform the experiments:
+To repeat the experiments describen in section 4, create a folder named "datasets" and store the datasets from PMLB used in the paper. When running the experiments, a folder named "results" will be created. These experiments were performed with a Slurm job scheduling system. The following files were used to perform the experiments:
 
-	- usefulFunctions.jl -> Defines the hyperparameters to be used in the experiments (values of maximum number of nodes, minimum MSE reduction, number of folds), and has useful functions that allows the load of tsv files, create crossvalidation indices, check if an experiment is already finished, etc.
+	- usefulFunctions.jl -> Defines the hyperparameters to be used in the experiments (values of maximum number of nodes, minimum MSE reduction, number of folds), and has useful functions that allows the load of tsv files, create crossvalidation indices, check if an experiment is already finished, etc. It uses the packages FileIO, DelimitedFiles and Random.
 	- createScripts.jl -> Creates the scripts for the Slurm schedule. For each dataset, 4 scripts are created, one for each strategy. Also, two additional scripts are created, names executeAll and cancelAll, that allows the submission and cancel of all of the jobs.
-	- experimentsDoME.jl -> 
-	- readResults.jl
+	- experimentsDoME.jl -> Performs the experiments on the dataset and strategy specified on the command prompt. It uses the package JLD2 to store the results.
+	- readResults.jl -> Returns the data for tables 5, 6, 7, and 8, and figures 5, 6, 7, and 8 from those datasets whose experiments (in the 4 strategies) have finished. The figures are stored as pdf files in the results folder. It uses the packages FileIO, JLD2, Statistics, Printf, StatsPlots, CriticalDifferenceDiagrams, DataFrames, and PGFPlots.
 
-However, the experiments can be performed on a single computer.
-
-When running the experiments, a folder named "results" will be created. 
-
+Even these files are written for a Slurm schedule system, the experiments can be performed on a single computer by just modifying and running experimentsDoME.jl
 
 # How to define your own strategy
 
