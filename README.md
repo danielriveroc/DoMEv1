@@ -16,7 +16,7 @@ The easiest way to wun DoME is by calling the function dome. Here is an example 
 
 	# Load the DoME system
 	include("DoME.jl");
-	# Run DoME with this parameters
+	# Run DoME with these parameters
 	(trainingMSE, validationMSE, testMSE, bestTree) = dome(inputs, targets;
 	   minimumReductionMSE = 1e-6,
 	   maximumNodes = 30,
@@ -90,12 +90,17 @@ To obtain the values of tables 1 and 3 and 4 in the paper, run the file exampleP
 
 To obtain the values of tables 4 in the paper (Newton's law of universal gravitation), run the file experimentNewton.jl
 
-To repeat the experiments describen in section 4, create a folder named "datasets" and store the corresponding datasets from PMLB. When running the experiments, a folder named "results" will be created. The following files were used to perform the experiments:
+To repeat the experiments describen in section 4, create a folder named "datasets" and store the datasets from PMLB used in the paper. These experiments were performed with a Slurm job scheduling system. The following files were used to perform the experiments:
 
-	- usefulFunctions.jl
-	- createScripts.jl
-	- experimentsDoME.jl
+	- usefulFunctions.jl -> Defines the hyperparameters to be used in the experiments (values of maximum number of nodes, minimum MSE reduction, number of folds), and has useful functions that allows the load of tsv files, create crossvalidation indices, check if an experiment is already finished, etc.
+	- createScripts.jl -> Creates the scripts for the Slurm schedule. For each dataset, 4 scripts are created, one for each strategy. Also, two additional scripts are created, names executeAll and cancelAll, that allows the submission and cancel of all of the jobs.
+	- experimentsDoME.jl -> 
 	- readResults.jl
+
+However, the experiments can be performed on a single computer.
+
+When running the experiments, a folder named "results" will be created. 
+
 
 # How to define your own strategy
 
