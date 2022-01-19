@@ -4,7 +4,7 @@ This project contains the source code of the first version of the DoME algorithm
 
 # How to use DoME
 
-The easiest way to wun DoME is by calling the function dome. Here is an example of use, in which only the main hyperparameters are set:
+The easiest way to wun DoME is by calling the function dome. Here is an example of use (available on the file exampleGithub.jl), in which only the main hyperparameters are set:
 
 	using FileIO
 	using DelimitedFiles
