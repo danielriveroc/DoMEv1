@@ -98,12 +98,25 @@ To obtain the values of tables 1 and 3 in the paper, run the file examplePaper.j
 
 To obtain the values of Table 4 in the paper (Newton's law of universal gravitation), run the file experimentNewton.jl
 
-To repeat the experiments describen in section 4, create a folder named "datasets" and store the datasets from PMLB used in the paper. When running the experiments, a folder named "results" will be created. These experiments were performed with a Slurm job scheduling system. The following files were used to perform the experiments:
+To repeat the experiments describen in section 4, create a folder named "datasets" and store the datasets from the Penn Machine Learning Benchmarks (PMLB) repository used in the paper. The following files have been used to perform the experiments:
+
+	1027_ESL.tsv              192_vineyard.tsv     485_analcatdata_vehicle.tsv       547_no2.tsv                 665_sleuth_case2002.tsv            706_sleuth_case1202.tsv
+	1028_SWD.tsv              195_auto_price.tsv   519_vinnie.tsv                    556_analcatdata_apnea2.tsv  666_rmftsa_ladata.tsv              712_chscase_geyser1.tsv
+	1029_LEV.tsv              207_autoPrice.tsv    522_pm10.tsv                      557_analcatdata_apnea1.tsv  678_visualizing_environmental.tsv
+	1030_ERA.tsv              210_cloud.tsv        523_analcatdata_neavote.tsv       561_cpu.tsv                 687_sleuth_ex1605.tsv
+	1089_USCrime.tsv          228_elusage.tsv      527_analcatdata_election2000.tsv  659_sleuth_ex1714.tsv       690_visualizing_galaxy.tsv
+	1096_FacultySalaries.tsv  230_machine_cpu.tsv  542_pollution.tsv                 663_rabe_266.tsv            695_chatfield_4.tsv
+
+These files are available at https://github.com/EpistasisLab/pmlb/tree/master/datasets
+
+When running the experiments, a folder named "results" will be created. These experiments were performed with a Slurm job scheduling system. The following files were used to perform the experiments:
 
 	- usefulFunctions.jl -> Defines the hyperparameters to be used in the experiments (values of maximum number of nodes, minimum MSE reduction, number of folds), and has useful functions that allows the load of tsv files, create crossvalidation indices, check if an experiment is already finished, etc. It uses the packages FileIO, DelimitedFiles and Random.
 	- createScripts.jl -> Creates the scripts for the Slurm schedule. For each dataset, 4 scripts are created, one for each strategy. Also, two additional scripts are created, names executeAll and cancelAll, that allows the submission and cancel of all of the jobs.
 	- experimentsDoME.jl -> Performs the experiments on the dataset and strategy specified on the command prompt. It uses the package JLD2 to store the results.
 	- readResults.jl -> Returns the data for tables 5, 6, 7, and 8, and figures 5, 6, 7, and 8 from those datasets whose experiments (in the 4 strategies) have finished. The figures are stored as pdf files in the results folder. It uses the packages FileIO, JLD2, Statistics, Printf, StatsPlots, CriticalDifferenceDiagrams, DataFrames, and PGFPlots.
+
+These experiments were run in a Slurm schedule system. to repeat the experiments, once the files are stores in the datasets folder, run the file called "createScripts.jl" to create the execution scripts: four scripts (one for each strategy) for each dataset, and two additional scripts "executeAll" and "cancelAll". Now you can submit each script to the Slurm queue, or justo run "executeAll" to submit all of the jobs at once.
 
 Even these files are written for a Slurm schedule system, the experiments can be performed on a single computer by just modifying and running experimentsDoME.jl
 
