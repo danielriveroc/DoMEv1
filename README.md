@@ -4,7 +4,7 @@ This project contains the source code of the first version of the DoME algorithm
 
 # How to use DoME
 
-The easiest way to wun DoME is by calling the function dome. Here is an example of use (available on the file exampleGithub.jl), in which only the main hyperparameters are set:
+The easiest way to wun DoME is by calling the function dome. Here is an example of use (available on the file "exampleGithub.jl"), in which only the main hyperparameters are set:
 
 	using FileIO
 	using DelimitedFiles
@@ -85,8 +85,8 @@ As it can be sen, this function allows the definition of a validation set. Howev
 
 To run this, you need to have the following files in the same folder:
 
-	- Tree.jl -> Tree structure creation and some useful functions to operate.
 	- DoME.jl -> Main algorithm, with the searches and the 4 strategies.
+	- Tree.jl -> Tree structure creation and some useful functions to operate.
 	- Equation.jl -> Management of the equations of each node, and calculation of the best constant for each node.
 	- NodePool.jl -> Struct for storing nodes to be used in the tree. This struct is filled with variables; however, in the future other nodes (and subtrees) could be stored on it.
 
