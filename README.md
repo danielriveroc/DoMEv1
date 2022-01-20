@@ -42,34 +42,42 @@ When calling the function dome, inputs is a NxP matrix of real numbers, and targ
 The declaration of this function is the following, with the whole set of parameters and their default values:
 
 	function dome(inputs::Array{<:Real,2}, targets::Array{<:Real,1};
-	    dataInRows = true,
-	    validationIndices::Array{Int64,1} = Array{Int64,1}([]),
-	    testIndices::Array{Int64,1} = Array{Int64,1}([]),
-	    validationRatio = 0. ,
-	    testRatio = 0. ,
-	    minimumReductionMSE = 1e-6,
-	    maximumHeight = Inf ,
-	    maximumNodes = 50 ,
-	    strategy = StrategyExhaustive ,
-	    goalMSE = 0 ,
-	    maxIterations = Inf ,
-	    showText = false ,
-	    checkForErrors = false
-	    )
+	    # Each instance in inputs is in a row or in a column
+	    dataInRows          ::Bool           = true,
+	    # Hyperparameters of the algorithm
+	    minimumReductionMSE ::Real           = 1e-6,
+	    maximumNodes        ::Int64          = 50 ,
+	    strategy            ::Function       = StrategyExhaustive ,
+	    # Other hyperparameter that the user might find useful
+	    maximumHeight       ::Real           = Inf ,
+	    # Stopping criteria
+	    goalMSE             ::Real           = 0 ,
+	    maxIterations       ::Real           = Inf ,
+	    # Indices of the instances used for validation and test (validation has not been tested and may fail)
+	    validationIndices   ::Array{Int64,1} = Int64[],
+	    testIndices         ::Array{Int64,1} = Int64[],
+	    # Validation and test ratios (these parameters have not been tested and may fail)
+	    validationRatio     ::Real           = 0. ,
+	    testRatio           ::Real           = 0. ,
+	    # If you want to see the iterations on screen. This makes the execution slower
+	    showText            ::Bool           = false ,
+	    # This parameter was used only for development. If it is set to true, the execution becomes much slower
+	    checkForErrors      ::Bool           = false
+	)
 
-The description of these parameters is the following, grouped in
+The description of these parameters is the following:
 
 	dataInRows -> allows the input matrix to have dimensions NxP when it is set to true (by default) or PxN when it is false (N: number of instances).
 	minimumReductionMSE -> A search is found to be successful if the reduction in MSE is positive and higher than the previous MSE value multiplied by this parameter.
-	maximumHeight -> maximum height of the tree. As explained in the paper, this parameter is not recommended to be used in the experiments.
 	maximumNodes -> maximum number of nodes in the tree.
 	strategy -> the strategy used to select which searches are going to be performed on which nodes. The 4 strategies described in the paper are available, with names StrategyExhaustive (by default), StrategyExhaustiveWithConstantOptimization, StrategySelectiveWithConstantOptimization and StrategySelective. They are also called Strategy1, Strategy2, Strategy3, Strategy4 respectively as used in the paper.
+	maximumHeight -> maximum height of the tree. As explained in the paper, this parameter is not recommended to be used in the experiments.
 	goalMSE -> if the algorithm reaches this MSE value in training, the iterative process is stopped.
 	maxIterations -> maximum number of iterations to be performed.
-	testIndices -> allows to split the dataset by separating some instances to perform the test, specifying which ones will be used for test.
-	testRatio ->   allows to split the dataset by separating some random instances to perform the test, specifying the ratio used for test.
 	validationIndices -> allows to split the dataset by separating some instances to perform the validation, specifying which ones will be used for validation.
+	testIndices -> allows to split the dataset by separating some instances to perform the test, specifying which ones will be used for test.
 	validationRatio ->   allows to split the dataset by separating some random instances to perform the validation, specifying the ratio used for validation.
+	testRatio ->   allows to split the dataset by separating some random instances to perform the test, specifying the ratio used for test.
 	showText -> if it is set to true, on each iteration some text (iteration number, best tree, MSE in training and test) is shown.
 	checkForErrors -> this parameter was used only for debugging, to easily find bugs in the source code. Therefore, it is best to leave it as false.
 
