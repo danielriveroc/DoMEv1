@@ -160,7 +160,7 @@ In any case, all the experiments described in the article are carried out in thi
 	# datasetName = "712_chscase_geyser1";           Strategy = Strategy1; MinimumReductionMSE = 1e-3; MaximumNodes = 45;
 	
 	# Load the dataset
-	(inputs, targets) = loadDataset(datasetName; datasetType=Float64);
+	(inputs, targets) = loadDataset(datasetName);
 
 	numFolds = 10;
 	# Create the same cross-validation indices used in the rest of experiments
