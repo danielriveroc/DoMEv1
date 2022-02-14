@@ -120,11 +120,8 @@ These experiments were run in a Slurm schedule system. to repeat the experiments
 
 Even these files are written for a Slurm schedule system, the experiments can be performed on a single computer by just modifying and running experimentsDoME.jl
 
-In any case, all the experiments described in the article are carried out in this way, with all values of the hyperparameters, performing a grid search. If you only want to check the values of Table 5, run the file called "exampleTable5.jl". In the first lines you will find all of the datasets with their hyperparameter configuration as shown in Table 5. Just uncomment the line corresponding to the one you want to repeat, and run the file. In this way, 10 experiments (10 folds) will be performed, and the median value of these 10 folds will be shown at the end. For each fold, an additional check is performed in this file, running the obtained expression with the dataset and ensuring that the MSE in test is the same as the one returned by the dome function. The content of this file is as follows:
+In any case, all the experiments described in the article are carried out in this way, with all values of the hyperparameters, performing a grid search. This will be computationally time-consuming. If you only want to check the values of Table 5, run the file called "exampleTable5.jl". In the first lines you will find all of the datasets with their hyperparameter configuration as shown in Table 5. Just uncomment the line corresponding to the one you want to repeat, and run this file. In this way, 10 experiments (10 folds) will be performed, and the median value of these 10 folds will be shown at the end. For each fold, an additional check is performed in this file, running the obtained expression with the dataset and ensuring that the MSE in test is the same as the one returned by the dome function. The content of this file is as follows:
 
-	dfgdrt
-	
-	
 	include("DoME.jl");
 	include("usefulFunctions.jl");
 
@@ -193,7 +190,6 @@ In any case, all the experiments described in the article are carried out in thi
 	    outputs = eval(Meta.parse(expr))
 	    # Finally, check that the MSE in test in these output values is equal to the one returned by the function dome
 	    @assert(isequal( testMSE, mean(((targets .- outputs).^2)[indicesKFold.==numFold]) ));
-
 
 	    println("   Finished fold $numFold/$numFolds, MSE in test: $testMSE");
 
