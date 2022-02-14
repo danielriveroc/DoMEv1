@@ -120,6 +120,94 @@ These experiments were run in a Slurm schedule system. to repeat the experiments
 
 Even these files are written for a Slurm schedule system, the experiments can be performed on a single computer by just modifying and running experimentsDoME.jl
 
+In any case, all the experiments described in the article are carried out in this way, with all values of the hyperparameters, performing a grid search. If you only want to check the values of Table 5, run the file called "exampleTable5.jl". In the first lines you will find all of the datasets with their hyperparameter configuration as shown in Table 5. Just uncomment the line corresponding to the one you want to repeat, and run the file. In this way, 10 experiments (10 folds) will be performed, and the median value of these 10 folds will be shown at the end. For each fold, an additional check is performed in this file, running the obtained expression with the dataset and ensuring that the MSE in test is the same as the one returned by the dome function. The content of this file is as follows:
+
+	dfgdrt
+	
+	
+include("DoME.jl");
+include("usefulFunctions.jl");
+
+# Uncomment the desired line to perform the experiments and obtain the results shown in Table 5
+datasetName = "1027_ESL";                      Strategy = Strategy2; MinimumReductionMSE = 1e-5; MaximumNodes = 100;
+# datasetName = "1028_SWD";                      Strategy = Strategy1; MinimumReductionMSE = 1e-5; MaximumNodes = 60;
+# datasetName = "1029_LEV";                      Strategy = Strategy3; MinimumReductionMSE = 1e-4; MaximumNodes = 45;
+# datasetName = "1030_ERA";                      Strategy = Strategy2; MinimumReductionMSE = 1e-7; MaximumNodes = 100;
+# datasetName = "1089_USCrime";                  Strategy = Strategy3; MinimumReductionMSE = 1e-3; MaximumNodes = 20;
+# datasetName = "1096_FacultySalaries";          Strategy = Strategy1; MinimumReductionMSE = 1e-7; MaximumNodes = 155;
+# datasetName = "192_vineyard";                  Strategy = Strategy4; MinimumReductionMSE = 1e-3; MaximumNodes = 15;
+# datasetName = "195_auto_price";                Strategy = Strategy1; MinimumReductionMSE = 1e-7; MaximumNodes = 65;
+# datasetName = "207_autoPrice";                 Strategy = Strategy2; MinimumReductionMSE = 1e-4; MaximumNodes = 160;
+# datasetName = "210_cloud";                     Strategy = Strategy4; MinimumReductionMSE = 1e-7; MaximumNodes = 55;
+# datasetName = "228_elusage";                   Strategy = Strategy1; MinimumReductionMSE = 1e-3; MaximumNodes = 15;
+# datasetName = "230_machine_cpu";               Strategy = Strategy4; MinimumReductionMSE = 1e-7; MaximumNodes = 70;
+# datasetName = "485_analcatdata_vehicle";       Strategy = Strategy4; MinimumReductionMSE = 1e-5; MaximumNodes = 145;
+# datasetName = "519_vinnie";                    Strategy = Strategy3; MinimumReductionMSE = 1e-4; MaximumNodes = 5;
+# datasetName = "522_pm10";                      Strategy = Strategy2; MinimumReductionMSE = 1e-4; MaximumNodes = 30;
+# datasetName = "523_analcatdata_neavote";       Strategy = Strategy3; MinimumReductionMSE = 1e-2; MaximumNodes = 10;
+# datasetName = "527_analcatdata_election2000";  Strategy = Strategy3; MinimumReductionMSE = 1e-5; MaximumNodes = 100;
+# datasetName = "542_pollution";                 Strategy = Strategy4; MinimumReductionMSE = 1e-4; MaximumNodes = 30;
+# datasetName = "547_no2";                       Strategy = Strategy1; MinimumReductionMSE = 1e-4; MaximumNodes = 50;
+# datasetName = "556_analcatdata_apnea2";        Strategy = Strategy4; MinimumReductionMSE = 1e-4; MaximumNodes = 115;
+# datasetName = "557_analcatdata_apnea1";        Strategy = Strategy1; MinimumReductionMSE = 1e-6; MaximumNodes = 125;
+# datasetName = "561_cpu";                       Strategy = Strategy3; MinimumReductionMSE = 1e-7; MaximumNodes = 140;
+# datasetName = "659_sleuth_ex1714";             Strategy = Strategy3; MinimumReductionMSE = 1e-2; MaximumNodes = 40;
+# datasetName = "663_rabe_266";                  Strategy = Strategy1; MinimumReductionMSE = 1e-7; MaximumNodes = 185;
+# datasetName = "665_sleuth_case2002";           Strategy = Strategy3; MinimumReductionMSE = 1e-6; MaximumNodes = 30;
+# datasetName = "666_rmftsa_ladata";             Strategy = Strategy1; MinimumReductionMSE = 1e-3; MaximumNodes = 70;
+# datasetName = "678_visualizing_environmental"; Strategy = Strategy3; MinimumReductionMSE = 1e-5; MaximumNodes = 30;
+# datasetName = "687_sleuth_ex1605";             Strategy = Strategy2; MinimumReductionMSE = 1e-7; MaximumNodes = 30;
+# datasetName = "690_visualizing_galaxy";        Strategy = Strategy1; MinimumReductionMSE = 1e-7; MaximumNodes = 75;
+# datasetName = "695_chatfield_4";               Strategy = Strategy3; MinimumReductionMSE = 1e-6; MaximumNodes = 30;
+# datasetName = "706_sleuth_case1202";           Strategy = Strategy3; MinimumReductionMSE = 1e-3; MaximumNodes = 70;
+# datasetName = "712_chscase_geyser1";           Strategy = Strategy1; MinimumReductionMSE = 1e-3; MaximumNodes = 45;
+
+# Load the dataset
+(inputs, targets) = loadDataset(datasetName; datasetType=Float64);
+
+numFolds = 10;
+# Create the same cross-validation indices used in the rest of experiments
+indicesKFold = crossvalidationIndices(length(targets), numFolds);
+
+testValues = Array{Float64,1}(undef,numFolds);
+
+println("Dataset \"", datasetNameFromFile(datasetName), "\" with strategy ", Strategy, ", Min. MSE redcution ", MinimumReductionMSE, " and Maximum num. nodes ", MaximumNodes);
+
+for numFold = 1:numFolds
+
+    # Run the DoME algorithm in this fold
+    (_, _, testMSE, bestTree) = dome(inputs, targets;
+        minimumReductionMSE = MinimumReductionMSE ,
+        maximumNodes = MaximumNodes ,
+        strategy = Strategy ,
+        showText = false ,
+        testIndices = findall(indicesKFold.==numFold)
+    );
+
+    # Check that the obtained expression returns this test value in this fold
+    # First, get this expression as a string with vector operations
+    expr = vectorString(bestTree);
+    # Convert the variable names "X" to "inputs"
+    expr = replace(expr, "X" => "inputs");
+    # Evaluate this expression
+    outputs = eval(Meta.parse(expr))
+    # Finally, check that the MSE in test in these output values is equal to the one returned by the function dome
+    @assert(isequal( testMSE, mean(((targets .- outputs).^2)[indicesKFold.==numFold]) ));
+
+
+    println("   Finished fold $numFold/$numFolds, MSE in test: $testMSE");
+
+    testValues[numFold] = testMSE;
+
+end;
+
+println("Median test MSE: ", median(testValues));
+
+	
+	
+	
+
+
 # How to define your own strategy
 
 Strategies are based on calling the functions PerformSearches! and OptimizeConstants!
