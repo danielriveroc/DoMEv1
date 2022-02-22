@@ -158,7 +158,7 @@ In any case, all the experiments described in the article are carried out in thi
 	# datasetName = "695_chatfield_4";               Strategy = Strategy3; MinimumReductionMSE = 1e-6; MaximumNodes = 30;
 	# datasetName = "706_sleuth_case1202";           Strategy = Strategy3; MinimumReductionMSE = 1e-3; MaximumNodes = 70;
 	# datasetName = "712_chscase_geyser1";           Strategy = Strategy1; MinimumReductionMSE = 1e-3; MaximumNodes = 45;
-	
+
 	# Load the dataset
 	(inputs, targets) = loadDataset(datasetName);
 
@@ -168,17 +168,18 @@ In any case, all the experiments described in the article are carried out in thi
 
 	testValues = Array{Float64,1}(undef,numFolds);
 
-	println("Dataset \"", datasetNameFromFile(datasetName), "\" with strategy ", Strategy, ", Min. MSE redcution ", MinimumReductionMSE, " and Maximum num. nodes ", MaximumNodes);
+	println("Dataset \"", datasetNameFromFile(datasetName), "\" with strategy ", Strategy, ", Min. MSE reduction ", MinimumReductionMSE, " and Maximum num. nodes ", MaximumNodes);
 
 	for numFold = 1:numFolds
 
-	    # Run the DoME algorithm in this fold
-	    (_, _, testMSE, bestTree) = dome(inputs, targets;
+	    trainingInputs = inputs[indicesKFold.!=numFold,:];
+	    trainingTargets = targets[indicesKFold.!=numFold];
+
+	    (_, _, _, bestTree) = dome(trainingInputs, trainingTargets;
 	        minimumReductionMSE = MinimumReductionMSE ,
 	        maximumNodes = MaximumNodes ,
 	        strategy = Strategy ,
-	        showText = false ,
-	        testIndices = findall(indicesKFold.==numFold)
+	        showText = false
 	    );
 
 	    # Check that the obtained expression returns this test value in this fold
@@ -188,8 +189,8 @@ In any case, all the experiments described in the article are carried out in thi
 	    expr = replace(expr, "X" => "inputs");
 	    # Evaluate this expression
 	    outputs = eval(Meta.parse(expr))
-	    # Finally, check that the MSE in test in these output values is equal to the one returned by the function dome
-	    @assert(isequal( testMSE, mean(((targets .- outputs).^2)[indicesKFold.==numFold]) ));
+	    # Calculate MSE in the test samples
+	    testMSE = mean(((targets .- outputs).^2)[indicesKFold.==numFold]);
 
 	    println("   Finished fold $numFold/$numFolds, MSE in test: $testMSE");
 
@@ -198,6 +199,8 @@ In any case, all the experiments described in the article are carried out in thi
 	end;
 
 	println("Median test MSE: ", median(testValues));
+
+
 
 # How to define your own strategy
 
