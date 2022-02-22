@@ -200,7 +200,7 @@ In any case, all the experiments described in the article are carried out in thi
 
 	println("Median test MSE: ", median(testValues));
 
-
+Note that in this file a training set is built, and after it the algorithm is called with this reduced dataset without test indices. In the previous code (for example, in exampleGithub.jl), the whole dataset is given to the dome function, with the indices used for test, and this function separates the test samples from the training dataset. Both ways to execute the dome function return the same results.
 
 # How to define your own strategy
 
