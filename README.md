@@ -182,8 +182,7 @@ In any case, all the experiments described in the article are carried out in thi
 	        showText = false
 	    );
 
-	    # Check that the obtained expression returns this test value in this fold
-	    # First, get this expression as a string with vector operations
+	    # Get this expression as a string with vector operations
 	    expr = vectorString(bestTree);
 	    # Convert the variable names "X" to "inputs"
 	    expr = replace(expr, "X" => "inputs");
