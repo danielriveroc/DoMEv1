@@ -1,6 +1,6 @@
 # DoMEv1
 
-This project contains the source code of the first version of the DoME algorithm for Symbolic Regression, written in Julia. The aim of this code is to be able to repeat the experiments described in the paper available at https://doi.org/10.1016/j.eswa.2022.116712. For this reason, this code will not be updated. Instead, a new project will be created with the DoME source code that will incorporate the updates. However, this code is fully functional. Feel free to use this source code to perform your experiments. However, if any publication is generated through this system, please add a citation to the following paper.
+This project contains the source code of the first version of the DoME algorithm for Symbolic Regression, written in Julia. The aim of this code is to be able to repeat the experiments described in the paper available at https://doi.org/10.1016/j.eswa.2022.116712. For this reason, this code will not be updated. Instead, a new project will be created with the DoME source code that will incorporate the updates. However, the code in this project is fully functional. Feel free to use this source code to perform your experiments. However, if any publication is generated through this system, please add a citation to that paper.
 
 # How to use DoME
 
@@ -98,7 +98,7 @@ To obtain the values of tables 1 and 3 in the paper, run the file examplePaper.j
 
 To obtain the values of Table 4 in the paper (Newton's law of universal gravitation), run the file experimentNewton.jl
 
-To repeat the experiments describen in section 4, create a folder named "datasets" and store the datasets from the Penn Machine Learning Benchmarks (PMLB) repository used in the paper. The following files have been used to perform the experiments:
+To repeat the experiments described in section 4, create a folder named "datasets" and store the datasets from the Penn Machine Learning Benchmarks (PMLB) repository used in the paper. The following files have been used to perform the experiments:
 
 	1027_ESL.tsv              192_vineyard.tsv     485_analcatdata_vehicle.tsv       547_no2.tsv                 665_sleuth_case2002.tsv            706_sleuth_case1202.tsv
 	1028_SWD.tsv              195_auto_price.tsv   519_vinnie.tsv                    556_analcatdata_apnea2.tsv  666_rmftsa_ladata.tsv              712_chscase_geyser1.tsv
