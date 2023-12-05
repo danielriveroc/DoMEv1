@@ -203,6 +203,8 @@ However, the run of all of the experiments in the grid search will be computatio
 
 Note that in this file a training set is built, and after it the algorithm is called with this reduced dataset without test indices. In the previous code (for example, in exampleGithub.jl), the whole dataset is given to the dome function, with the indices used for test, and this function separates the test samples from the training dataset. Both ways to execute the dome function return the same results.
 
+An important remark in repeating the experiments of the paper and obtaining the same numerical results has to do with the random division of the dataset into training and test. Even the random seed is set, the random function is based on the Random package, and can change from one version to another. For this reason, to obtain the same numerical results it is necessary to run the same version of Julia as the one used in the paper (v1.4.2).
+
 # How to define your own strategy
 
 Strategies are based on calling the functions PerformSearches! and OptimizeConstants!
