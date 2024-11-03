@@ -1,6 +1,7 @@
 # DoMEv1
 
 This project contains the source code of the first version of the DoME algorithm for Symbolic Regression, written in Julia v1.4.2. The aim of this code is to be able to repeat the experiments described in the paper available at https://doi.org/10.1016/j.eswa.2022.116712. For this reason, this code will not be updated. Instead, a Julia package with the most recent code can be found at https://github.com/danielriveroc/SymDoME.jl, you can use this package to use this algorithm for Symbolic Regression and Classification.
+
 However, the code in this project is fully functional. Feel free to use this source code to perform your experiments. If any publication is generated through this system, please add a citation to that paper. Also, if you need any more explanations on how to run DoME or how to repeat the experiments, or there is any issue with this repository, please let me know.
 
 # How to use DoME
